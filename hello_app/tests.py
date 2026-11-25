@@ -11,4 +11,4 @@ class HelloViewTests(SimpleTestCase):
 
     def test_hello_page_message(self):
         response = self.client.get(reverse('hello'))
-        self.assertContains(response, "What's up GCP!")
+        self.assertContains(response, "Hello from the pipeline!")
