@@ -1,0 +1,23 @@
+# gcloud's own files
+.gcloudignore
+.git
+.gitignore
+
+# Reuse everything already in your .gitignore
+#!include:.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+.env
+
+# Local dev stuff
+db.sqlite3
+*.log
+media/
+node_modules/
+.idea/
+.vscode/

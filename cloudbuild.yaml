@@ -1,0 +1,27 @@
+# Cloud Build pipeline: runs on every push to GitHub (via a Cloud Build trigger)
+# Step 1 runs the Django tests. If any test fails, the build stops and nothing deploys.
+# Step 2 deploys to App Engine only after the tests pass.
+
+steps:
+  # Install dependencies and run the tests, same Python version as app.yaml
+  - id: run-tests
+    name: python:3.14-slim
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        set -e
+        pip install --no-cache-dir -r requirements.txt
+        python manage.py test
+
+  # Deploy to App Engine (uses app.yaml and respects .gcloudignore)
+  - id: deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args: ['app', 'deploy', 'app.yaml', '--quiet']
+
+timeout: 1200s
+
+options:
+  # Required when the trigger runs as a user-chosen service account
+  logging: CLOUD_LOGGING_ONLY
